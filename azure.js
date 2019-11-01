@@ -4,8 +4,8 @@ const config = require('./config')
 
 const sortByMainEmotion = (emotions) => {
   const emotionsArrray = _.map(emotions, (score, emotion) => ({ score, emotion }))
-  const filteredEmotions = emotionsArrray
-  //const filteredEmotions = _.filter(emotionsArrray, element => element.emotion !== 'neutral')
+  //const filteredEmotions = emotionsArrray
+  const filteredEmotions = _.filter(emotionsArrray, element => element.emotion !== 'neutral')
   return _.reverse(_.sortBy(filteredEmotions, 'score'))
 }
 
@@ -14,6 +14,8 @@ const detectEmotions = (imageBuffer) => {
     const face = _.head(faces)
     const { emotion: emotions} = face.faceAttributes
     return sortByMainEmotion(emotions)
+  }).catch(error => {
+    console.log(error)
   })
 }
 
@@ -33,8 +35,6 @@ function detectFaces(data) {
     data
   }).then((response) => {
     return response.data
-  }).catch((err) => {
-    console.log(err.message)
   })
 }
 
